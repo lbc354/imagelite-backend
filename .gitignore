@@ -12,7 +12,6 @@
 
 
 # Created by https://www.gitignore.io/api/git,java,maven,eclipse,windows
-
 ### Eclipse ###
 .metadata
 bin/
@@ -200,7 +199,7 @@ README.html
 .exercism
 
 # personal
-docker-compose.yml
-data/
 **/application.properties
 **/application.yml
+docker-compose.yml
+data/
