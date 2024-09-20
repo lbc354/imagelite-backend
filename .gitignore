@@ -199,6 +199,6 @@ README.html
 .exercism
 
 # personal
-**/application.yml
+# **/application.yml
 docker-compose.yml
 data/
