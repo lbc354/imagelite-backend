@@ -199,7 +199,6 @@ README.html
 .exercism
 
 # personal
-**/application.properties
 **/application.yml
 docker-compose.yml
 data/
