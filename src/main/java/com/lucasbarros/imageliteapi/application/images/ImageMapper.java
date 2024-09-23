@@ -14,7 +14,6 @@ import com.lucasbarros.imageliteapi.domain.enums.ImageExtension;
 public class ImageMapper {
 	
 	public Image mapToImage(MultipartFile file, String name, List<String> tags) throws IOException {
-		
 		return Image.builder()
 				.name(name)
 				.tags(String.join(";", tags)) // ["tag1","tag2"] -> "tag1,tag2"
@@ -26,7 +25,16 @@ public class ImageMapper {
 				
 				.file(file.getBytes())
 				.build();
-		
+	}
+	
+	public ImageDTO imageToDTO(Image image, String url) {
+		return ImageDTO.builder()
+				.url(url)
+				.extension(image.getExtension().name())
+				.name(image.getName())
+				.size(image.getSize())
+				.uploadDate(image.getUploadDate().toLocalDate())
+				.build();
 	}
 
 }

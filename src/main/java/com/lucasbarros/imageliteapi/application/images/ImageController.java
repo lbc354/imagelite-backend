@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 // lombok
 @Slf4j // para os logs
 @RequiredArgsConstructor
-public class ImagesController {
+public class ImageController {
 	
 	private final ImageService imgserv;
 	private final ImageMapper mapper;
