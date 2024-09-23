@@ -1,4 +1,4 @@
-package com.lucasbarros.imageliteapi.infra.repository;
+package com.lucasbarros.imageliteapi.infra.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
