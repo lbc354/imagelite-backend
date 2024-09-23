@@ -1,18 +1,18 @@
 package com.lucasbarros.imageliteapi.application.images;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.lucasbarros.imageliteapi.domain.entities.Image;
-import com.lucasbarros.imageliteapi.domain.enums.ImageExtension;
 import com.lucasbarros.imageliteapi.domain.services.ImageService;
 
 import lombok.RequiredArgsConstructor;
@@ -28,10 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ImagesController {
 	
 	private final ImageService imgserv;
-	// o spring vai pegar uma implementação dessa interface (em ImageServiceImpl), vai instanciar um objeto e vai injetar aqui para utilizarmos
-	
-	// formato utilizado por formulários com mídia: multipart/form-data
-	// @RequestParam(value = "file", required = false) MultipartFile file -> parâmetro opcional
+	private final ImageMapper mapper;
 	
 	@PostMapping
 	public ResponseEntity save(
@@ -40,24 +37,27 @@ public class ImagesController {
 			@RequestParam("tags") List<String> tags
 			) throws IOException {
 
-		log.info("Imagem recebida. name: {}, size: {}", file.getOriginalFilename(), file.getSize());
+		log.info("Imagem recebida. name: {}, size: {}",
+				file.getOriginalFilename(), file.getSize());
 		
-		Image image = Image.builder()
-				.name(name)
-				.tags(String.join(";", tags)) // ["tag1","tag2"] -> "tag1,tag2"
-				.size(file.getSize())
-				
-				.extension(ImageExtension.valorDe(
-						MediaType.valueOf(file.getContentType())
-						))
-				
-				.file(file.getBytes())
-				.build();
+		Image image = mapper.mapToImage(file, name, tags);
+		Image savedImage = imgserv.save(image);
+		URI imgUri = buildImageURL(savedImage);
 		
-		imgserv.save(image);
-		
-		return ResponseEntity.ok().build();
+		return ResponseEntity.created(imgUri).build();
 
+	}
+	
+	// http://localhost:8080/v1/images/image-id
+	private URI buildImageURL(Image image) {
+		
+		String imagePath = "/" + image.getId();
+		return ServletUriComponentsBuilder
+				.fromCurrentRequest()
+				.path(imagePath)
+				.build()
+				.toUri();
+		
 	}
 
 }

@@ -1,11 +1,19 @@
 spring:
+  
   datasource:
     url: jdbc:postgresql://localhost:5432/imagelite_db
     username: postgres
     password: postgresql_password
+  
   jpa:
     database: POSTGRESQL
     hibernate:
       ddl-auto: update
     show-sql: true
     open-in-view: false
+  
+  # configuração para receber imagens maiores
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
