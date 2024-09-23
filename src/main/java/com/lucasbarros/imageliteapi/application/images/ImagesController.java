@@ -4,7 +4,11 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,14 +54,36 @@ public class ImagesController {
 	
 	// http://localhost:8080/v1/images/image-id
 	private URI buildImageURL(Image image) {
-		
 		String imagePath = "/" + image.getId();
 		return ServletUriComponentsBuilder
 				.fromCurrentRequest()
 				.path(imagePath)
 				.build()
 				.toUri();
+	}
+	
+	
+	
+	@GetMapping("{uuid}")
+	public ResponseEntity<byte[]> getImage(@PathVariable("uuid") String id) {
+		var possibleImage = imgserv.getById(id);
 		
+		if (possibleImage.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+		
+		// o get retorna o objeto que está dentro do optional
+		var image = possibleImage.get();
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(image.getExtension().getMediaType());
+		headers.setContentLength(image.getSize());
+		// \" é a forma de escrever aspas duplas
+		headers.setContentDispositionFormData(
+				"inline; filename=\"" + image.getFileName() + "\"",
+				image.getFileName());
+		
+		return new ResponseEntity<>(image.getFile(), headers, HttpStatus.OK);
 	}
 
 }

@@ -4,12 +4,15 @@ import java.util.Arrays;
 
 import org.springframework.http.MediaType;
 
+import lombok.Getter;
+
 public enum ImageExtension {
 
 	PNG(MediaType.IMAGE_PNG),
 	JPEG(MediaType.IMAGE_JPEG),
 	GIF(MediaType.IMAGE_GIF);
 	
+	@Getter
 	private MediaType mediaType;
 
 	private ImageExtension(MediaType mediaType) {

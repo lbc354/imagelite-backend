@@ -50,5 +50,11 @@ public class Image {
 	@Column
 	@Lob // essa anotação diz que o campo é um arquivo
 	private byte[] file;
+	
+	
+	
+	public String getFileName() {
+		return getName().concat(".").concat(getExtension().name());
+	}
 
 }

@@ -1,5 +1,7 @@
 package com.lucasbarros.imageliteapi.application.images;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,9 +19,14 @@ public class ImageServiceImpl implements ImageService {
 	private final ImageRepository imgrep;
 
 	@Override
-	@Transactional // recomendada para toda operação de escrita
+	@Transactional // recomendada para operação de escrita
 	public Image save(Image image) {
 		return imgrep.save(image);
+	}
+
+	@Override
+	public Optional<Image> getById(String id) {
+		return imgrep.findById(id);
 	}
 
 }
