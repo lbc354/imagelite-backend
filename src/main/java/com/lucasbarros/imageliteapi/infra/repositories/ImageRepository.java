@@ -29,7 +29,7 @@ public interface ImageRepository extends JpaRepository<Image, String>, JpaSpecif
 
 		if (StringUtils.hasText(queryValue)) {
 			// AND (name LIKE 'query' OR tags LIKE 'query')
-
+			
 			Specification<Image> nameLike = (r, q, cb) -> cb.like(cb.upper(r.get("name")),
 					"%" + queryValue.toUpperCase() + "%");
 
@@ -38,7 +38,7 @@ public interface ImageRepository extends JpaRepository<Image, String>, JpaSpecif
 
 			Specification<Image> nameOrTagsLike = Specification.anyOf(nameLike, tagsLike);
 
-			spec.and(nameOrTagsLike);
+			spec = spec.and(nameOrTagsLike);
 		}
 
 		return findAll(spec);

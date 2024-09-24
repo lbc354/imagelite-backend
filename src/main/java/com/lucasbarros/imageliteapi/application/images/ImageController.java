@@ -35,7 +35,7 @@ public class ImageController {
 	private final ImageMapper mapper;
 	
 	@PostMapping
-	public ResponseEntity save(
+	public ResponseEntity<?> save(
 			@RequestParam("file") MultipartFile file,
 			@RequestParam("name") String name,
 			@RequestParam("tags") List<String> tags
@@ -56,7 +56,7 @@ public class ImageController {
 	private URI buildImageURL(Image image) {
 		String imagePath = "/" + image.getId();
 		return ServletUriComponentsBuilder
-				.fromCurrentRequest()
+				.fromCurrentRequestUri()
 				.path(imagePath)
 				.build()
 				.toUri();
@@ -95,11 +95,15 @@ public class ImageController {
 	// http://localhost:8080/v1/images?extension=PNG&query=Nature
 	@GetMapping
 	public ResponseEntity<List<ImageDTO>> search(
-			@RequestParam(value = "extension", required = false) String extension,
-			@RequestParam(value = "query", required = false) String query
+			@RequestParam(
+					value = "extension",
+					required = false) String extension,
+			@RequestParam(
+					value = "query",
+					required = false) String query
 			) {
 		
-		var result = imgserv.search(ImageExtension.valueOf(extension), query);
+		var result = imgserv.search(ImageExtension.ofName(extension), query);
 		
 		var images = result.stream().map(image -> {
 			var url = buildImageURL(image);
