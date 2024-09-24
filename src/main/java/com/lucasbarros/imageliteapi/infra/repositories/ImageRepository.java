@@ -9,36 +9,29 @@ import org.springframework.util.StringUtils;
 
 import com.lucasbarros.imageliteapi.domain.entities.Image;
 import com.lucasbarros.imageliteapi.domain.enums.ImageExtension;
+import com.lucasbarros.imageliteapi.infra.repositories.specs.GenericSpecs;
+import com.lucasbarros.imageliteapi.infra.repositories.specs.ImageSpecs;
 
 public interface ImageRepository extends JpaRepository<Image, String>, JpaSpecificationExecutor<Image> {
 
-	// SELECT * FROM tb_image WHERE 1 = 1 AND extension = 'value' AND (name LIKE 'value' OR tags LIKE 'value')
-	default List<Image> findByExtensionAndNameOrTagsLike(ImageExtension extension, String queryValue) {
+	// SELECT * FROM tb_image WHERE 1 = 1
+	// AND extension = 'value'
+	// AND (name LIKE 'query' OR tags LIKE 'query')
+	default List<Image> findByExtensionAndNameOrTagsLike(ImageExtension extension, String query) {
 
 		// SELECT * FROM tb_image WHERE 1 = 1
-
-		Specification<Image> conjunction = (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
-		Specification<Image> spec = Specification.where(conjunction);
+		Specification<Image> spec = Specification.where(GenericSpecs.conjunction());
 
 		if (extension != null) {
 			// AND extension = 'value'
-
-			Specification<Image> extensionEqual = (r, q, cb) -> cb.equal(r.get("extension"), extension);
-			spec = spec.and(extensionEqual);
+			spec = spec.and(ImageSpecs.extensionEqual(extension));
 		}
 
-		if (StringUtils.hasText(queryValue)) {
+		if (StringUtils.hasText(query)) {
 			// AND (name LIKE 'query' OR tags LIKE 'query')
-			
-			Specification<Image> nameLike = (r, q, cb) -> cb.like(cb.upper(r.get("name")),
-					"%" + queryValue.toUpperCase() + "%");
-
-			Specification<Image> tagsLike = (r, q, cb) -> cb.like(cb.upper(r.get("tags")),
-					"%" + queryValue.toUpperCase() + "%");
-
-			Specification<Image> nameOrTagsLike = Specification.anyOf(nameLike, tagsLike);
-
-			spec = spec.and(nameOrTagsLike);
+			spec = spec.and(Specification.anyOf(
+					ImageSpecs.nameLike(query),
+					ImageSpecs.tagsLike(query)));
 		}
 
 		return findAll(spec);
