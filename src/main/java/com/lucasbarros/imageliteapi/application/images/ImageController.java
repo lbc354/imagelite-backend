@@ -3,6 +3,7 @@ package com.lucasbarros.imageliteapi.application.images;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,14 +18,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.lucasbarros.imageliteapi.domain.entities.Image;
+import com.lucasbarros.imageliteapi.domain.enums.ImageExtension;
 import com.lucasbarros.imageliteapi.domain.services.ImageService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-// todo controlador rest precisa dessa annotation para que ele receba requisições http
 @RestController
-// para dizer qual url ele vai ficar escutando
 @RequestMapping("/v1/images")
 // lombok
 @Slf4j // para os logs
@@ -65,7 +65,10 @@ public class ImageController {
 	
 	
 	@GetMapping("{uuid}")
-	public ResponseEntity<byte[]> getImage(@PathVariable("uuid") String id) {
+	public ResponseEntity<byte[]> getImage(
+			@PathVariable("uuid") String id
+			) {
+		
 		var possibleImage = imgserv.getById(id);
 		
 		if (possibleImage.isEmpty()) {
@@ -84,6 +87,27 @@ public class ImageController {
 				image.getFileName());
 		
 		return new ResponseEntity<>(image.getFile(), headers, HttpStatus.OK);
+		
+	}
+	
+	
+	
+	// http://localhost:8080/v1/images?extension=PNG&query=Nature
+	@GetMapping
+	public ResponseEntity<List<ImageDTO>> search(
+			@RequestParam(value = "extension", required = false) String extension,
+			@RequestParam(value = "query", required = false) String query
+			) {
+		
+		var result = imgserv.search(ImageExtension.valueOf(extension), query);
+		
+		var images = result.stream().map(image -> {
+			var url = buildImageURL(image);
+			return mapper.imageToDTO(image, url.toString());
+		}).collect(Collectors.toList());
+		
+		return ResponseEntity.ok(images);
+		
 	}
 
 }

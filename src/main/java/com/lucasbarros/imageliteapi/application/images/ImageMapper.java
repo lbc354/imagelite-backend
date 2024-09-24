@@ -19,7 +19,7 @@ public class ImageMapper {
 				.tags(String.join(";", tags)) // ["tag1","tag2"] -> "tag1;tag2"
 				.size(file.getSize())
 				
-				.extension(ImageExtension.valorDe(
+				.extension(ImageExtension.valueOf(
 						MediaType.valueOf(file.getContentType())
 						))
 				

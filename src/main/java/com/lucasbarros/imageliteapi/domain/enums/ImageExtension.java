@@ -19,7 +19,7 @@ public enum ImageExtension {
 		this.mediaType = mediaType;
 	}
 	
-	public static ImageExtension valorDe(MediaType mediaType) {
+	public static ImageExtension valueOf(MediaType mediaType) {
 		return Arrays.stream(values()).filter(
 				imageExtension -> 
 				imageExtension.mediaType.equals(mediaType))
