@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/v1/images")
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 // lombok
 @Slf4j // para os logs
 @RequiredArgsConstructor
@@ -42,9 +42,6 @@ public class ImageController {
 			@RequestParam("name") String name,
 			@RequestParam("tags") List<String> tags
 			) throws IOException {
-
-		log.info("Imagem recebida. name: {}, size: {}",
-				file.getOriginalFilename(), file.getSize());
 		
 		Image image = mapper.mapToImage(file, name, tags);
 		Image savedImage = imgserv.save(image);
@@ -54,7 +51,6 @@ public class ImageController {
 
 	}
 	
-	// http://localhost:8080/v1/images/image-id
 	private URI buildImageURL(Image image) {
 		String imagePath = "/" + image.getId();
 		return ServletUriComponentsBuilder
