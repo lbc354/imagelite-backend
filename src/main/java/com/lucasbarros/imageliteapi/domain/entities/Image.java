@@ -25,7 +25,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "tb_image")
 @EntityListeners(AuditingEntityListener.class) // para @CreatedDate
-// anotações lombok
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

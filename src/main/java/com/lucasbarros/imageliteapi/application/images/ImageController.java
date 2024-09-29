@@ -28,8 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/v1/images")
 @CrossOrigin(origins = "http://localhost:3000")
-// lombok
-@Slf4j // para os logs
+@Slf4j
 @RequiredArgsConstructor
 public class ImageController {
 	

@@ -14,7 +14,6 @@ import com.lucasbarros.imageliteapi.infra.repositories.ImageRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
-// lombok
 @RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService {
 	

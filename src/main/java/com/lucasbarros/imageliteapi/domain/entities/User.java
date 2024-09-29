@@ -21,7 +21,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "tb_user")
 @EntityListeners(AuditingEntityListener.class) // para @CreatedDate
-// anotações lombok
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

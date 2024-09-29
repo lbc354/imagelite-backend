@@ -1,11 +1,13 @@
 package com.lucasbarros.imageliteapi.domain.services;
 
+import java.util.Optional;
+
 import com.lucasbarros.imageliteapi.domain.AccessToken;
 import com.lucasbarros.imageliteapi.domain.entities.User;
 
 public interface UserService {
 
-	User getByEmail(String email);
+	Optional<User> getByEmail(String email);
 
 	User save(User user);
 
