@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
-@EnableJpaAuditing // para @CreatedDate na entidade Image
+@EnableJpaAuditing // para @CreatedDate nas entidades
 public class ImageliteapiApplication {
 	
 	public static void main(String[] args) {
