@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public User save(User user) {
 		var possibleUser = getByEmail(user.getEmail());
-		if (possibleUser != null) {
+		if (!possibleUser.isEmpty()) {
 			throw new DuplicatedTupleException("User already exists");
 		}
 		encodePassword(user);
