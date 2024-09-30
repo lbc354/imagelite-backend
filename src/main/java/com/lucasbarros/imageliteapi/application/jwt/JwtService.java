@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.crypto.SecretKey;
-
 import org.springframework.stereotype.Service;
 
 import com.lucasbarros.imageliteapi.domain.AccessToken;
