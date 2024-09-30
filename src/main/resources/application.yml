@@ -1,7 +1,7 @@
 spring:
   
   datasource:
-    url: jdbc:postgresql://localhost:5432/imagelite_db
+    url: jdbc:postgresql://localhost:5433/imagelite_db
     username: postgres
     password: postgresql_password
   

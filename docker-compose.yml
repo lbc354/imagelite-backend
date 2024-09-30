@@ -1,5 +1,6 @@
-# parei na aula 13 por conta de problemas com docker+postgre
+# o erro era porque tenho o postgre instalado na minha máquina (portas colidiram)
 services:
+
   db:
     image: postgres
     restart: always
@@ -8,7 +9,7 @@ services:
       POSTGRES_PASSWORD: postgresql_password
       POSTGRES_DB: imagelite_db
     ports:
-      - '5432:5432'
+      - '5433:5432'
     volumes:
       - ./data:/var/lib/postgresql/data
   
