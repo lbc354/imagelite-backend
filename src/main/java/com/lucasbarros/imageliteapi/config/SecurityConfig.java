@@ -20,32 +20,26 @@ public class SecurityConfig {
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
-	// csrf é quando trabalhamos com páginas web no spring, mas estamos utilizando react
+
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http
 				.csrf(AbstractHttpConfigurer::disable)
-				// ou .csrf((csrf) -> csrf.disable())
-				.cors((cors) -> cors.configure(http))
-				// ou .csrf((cors) -> cors.disable())
-				.authorizeHttpRequests((authorizeHttpRequests) ->
-	 				authorizeHttpRequests
-						//.requestMatchers("/**").hasRole("USER")
-	 				.anyRequest().permitAll()
-				)
+				.cors(cors -> cors.configure(http))
+				.authorizeHttpRequests(ahr -> {
+					ahr.requestMatchers("/v1/users/**").permitAll();
+					ahr.anyRequest().authenticated(); // <- genérica tem que ser a última
+				})
 				.build();
 	}
-	
+
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
-		// applyPermitDefaultValues() permite tudo
 		CorsConfiguration config = new CorsConfiguration().applyPermitDefaultValues();
 		UrlBasedCorsConfigurationSource cors = new UrlBasedCorsConfigurationSource();
-		
+
 		cors.registerCorsConfiguration("/**", config); // para todas urls
-		// ...("/v1/users", config); // ou selecione em quais vai aplicar a configuração
-		
+
 		return cors;
 	}
 
