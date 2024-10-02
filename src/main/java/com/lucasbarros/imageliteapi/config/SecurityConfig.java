@@ -28,6 +28,7 @@ public class SecurityConfig {
 				.cors(cors -> cors.configure(http))
 				.authorizeHttpRequests(ahr -> {
 					ahr.requestMatchers("/v1/users/**").permitAll();
+					ahr.requestMatchers("/v1/images").permitAll();
 					ahr.anyRequest().authenticated(); // <- genérica tem que ser a última
 				})
 				.build();
