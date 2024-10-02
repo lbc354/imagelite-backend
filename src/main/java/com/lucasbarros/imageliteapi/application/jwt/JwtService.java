@@ -54,10 +54,9 @@ public class JwtService {
 			JwtParser build = Jwts.parser().verifyWith(secretKeyGenerator.getKey()).build();
 		
 			Jws<Claims> jwsClaims = build.parseSignedClaims(tokenJwt);
-			// no momento do parse (decodificar token),
-			// se o token estiver expirado ele vai lançar uma exception (JwtException),
-			// ou se o token não for um jwt, se for uma string qualquer,
-			// ele também lança exception
+			// no momento do parse (decodificar token), se o token estiver expirado,
+			// ele vai lançar uma exception (JwtException), ou se o token não for um jwt,
+			// se for uma string qualquer, também lança exception
 			
 			Claims claims = jwsClaims.getPayload();
 			
