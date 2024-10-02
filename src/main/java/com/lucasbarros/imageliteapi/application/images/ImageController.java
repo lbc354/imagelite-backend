@@ -41,6 +41,10 @@ public class ImageController {
 			) throws IOException {
 		
 		Image image = mapper.mapToImage(file, name, tags);
+		// validação ruim
+		if (image == null) {
+			return ResponseEntity.badRequest().build();
+		}
 		Image savedImage = imgserv.save(image);
 		URI imgUri = buildImageURL(savedImage);
 		
