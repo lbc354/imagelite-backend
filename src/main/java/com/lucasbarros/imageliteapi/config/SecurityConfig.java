@@ -2,6 +2,7 @@ package com.lucasbarros.imageliteapi.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -45,7 +46,8 @@ public class SecurityConfig {
 				.cors(cors -> cors.configure(http))
 				.authorizeHttpRequests(ahr -> {
 					ahr.requestMatchers("/v1/users/**").permitAll();
-//					ahr.requestMatchers("/v1/images").permitAll();
+					ahr.requestMatchers(HttpMethod.GET, "/v1/images/**").permitAll();
+					// as imagens são geradas pelo endpoint /images/uuid
 					ahr.anyRequest().authenticated(); // <- genérica tem que ser a última
 				})
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

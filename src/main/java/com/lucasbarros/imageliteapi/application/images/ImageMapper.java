@@ -16,7 +16,7 @@ public class ImageMapper {
 	public Image mapToImage(MultipartFile file, String name, List<String> tags) throws IOException {
 		return Image.builder()
 				.name(name.strip())
-				.tags(String.join(";", tags).strip()) // ["tag1","tag2"] -> "tag1;tag2"
+				.tags(String.join(" ", tags).strip()) // ["tag1","tag2"] -> "tag1 tag2"
 				.size(file.getSize())
 				
 				.extension(ImageExtension.valueOf(
