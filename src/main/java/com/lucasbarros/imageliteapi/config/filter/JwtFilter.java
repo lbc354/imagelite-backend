@@ -80,5 +80,11 @@ public class JwtFilter extends OncePerRequestFilter {
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
+	
+	// para que não seja feito o filtro em páginas que não precisa estar logado
+	@Override
+	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+		return request.getRequestURI().contains("/v1/users");
+	}
 
 }
