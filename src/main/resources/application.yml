@@ -1,9 +1,10 @@
+# ambiente default
 spring:
   
   datasource:
     url: jdbc:postgresql://localhost:5433/imagelite_db
-    username: postgres
-    password: postgresql_password
+    username: ${PG_USERNAME}
+    password: ${PG_PASSWORD}
   
   jpa:
     database: POSTGRESQL
@@ -12,8 +13,20 @@ spring:
     show-sql: true
     open-in-view: false
   
-  # configuração para receber imagens maiores
   servlet:
     multipart:
       max-file-size: 3MB
       max-request-size: 3MB
+      
+---
+
+# ambiente de produção (sobrescreve default)
+spring:
+
+  config:
+    activate:
+      on-profile:
+      - production
+  
+  datasource:
+    url: jdbc:postgresql://${PG_HOST}:5433/imagelite_db
