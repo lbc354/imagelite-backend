@@ -11,6 +11,8 @@ services:
       - '5433:5432'
     volumes:
       - ./data:/var/lib/postgresql/data
+    networks:
+      - imagelitenetwork
   
   pgadmin:
     image: dpage/pgadmin4
@@ -22,3 +24,29 @@ services:
       - '15432:80'
     depends_on:
       - db
+    networks:
+      - imagelitenetwork
+      
+  sbootapp:
+    build:
+      dockerfile: Dockerfile
+    container_name: imageliteapi
+    restart: on-failure
+    depends_on:
+      - db
+    ports:
+      - '8080:8080'
+    networks:
+      - imagelitenetwork
+    environment:
+      - PG_HOST=db
+      - PG_USERNAME=${PG_USERNAME}
+      - PG_PASSWORD=${PG_PASSWORD}
+      - PGADMIN_EMAIL=${PGADMIN_EMAIL}
+      - PGADMIN_PASSWORD=${PGADMIN_PASSWORD}
+      
+
+
+networks:
+  imagelitenetwork:
+    driver: bridge
